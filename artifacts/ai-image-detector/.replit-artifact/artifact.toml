@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "AI Image Detector"
+description = "A simple image analysis website that lets users upload a photo and receive an explainable estimate of whether it looks AI-generated or like a real photograph, with a confidence score."
+version = "1.0.0"
+id = "artifacts/ai-image-detector"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22821
+
+[services.development]
+run = "pnpm --filter @workspace/ai-image-detector run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/ai-image-detector", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/ai-image-detector/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22821"
+BASE_PATH = "/"
